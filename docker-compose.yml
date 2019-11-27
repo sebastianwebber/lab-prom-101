@@ -1,0 +1,43 @@
+version: '3.2'
+services:
+  grafana:
+    image: grafana/grafana:6.5.0
+    ports:
+      - 3000:3000
+    depends_on:
+    - prom
+  prom:
+    image: prom/prometheus:latest
+    container_name: prom
+    ports:
+    - 9090:9090
+    command:
+    - --config.file=/etc/prometheus/prometheus.yml
+    volumes:
+    - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    - promdata:/prometheus
+    depends_on:
+    - postgres_exporter
+  postgres_exporter:
+    image: wrouesnel/postgres_exporter
+    container_name: postgres_exporter
+    environment:
+    - DATA_SOURCE_NAME=postgresql://postgres:password@postgres:5432/postgres?sslmode=disable
+    depends_on:
+    - postgres
+    ports:
+    - 9187:9187
+  postgres:
+    image: postgres:12
+    container_name: postgres
+    volumes:
+    - pgdata:/var/lib/postgresql/data
+    ports:
+    - 5432:5432
+    environment:
+    - POSTGRES_PASSWORD=password
+
+
+volumes:
+  pgdata: {}
+  promdata: {}
