@@ -4,3 +4,9 @@ scrape_configs:
   static_configs:
   - targets:
     - postgres_exporter:9187
+
+- job_name: nodes
+  scrape_interval: 5s
+  static_configs:
+  - targets:
+    - node_exporter:9100
