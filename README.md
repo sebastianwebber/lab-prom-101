@@ -11,7 +11,7 @@
 1. Clone this repo:
 
     ```bash
-    git clone git@github.com:sebastianwebber/lab-prom-101.git ; cd lab-prom-101
+    git clone https://github.com/sebastianwebber/lab-prom-101.git ; cd lab-prom-101
     ```
 
 1. Start the containers
@@ -23,7 +23,7 @@
 ### all at once
 
 ```bash
-git clone git@github.com:sebastianwebber/lab-prom-101.git ; cd lab-prom-101
+git clone https://github.com/sebastianwebber/lab-prom-101.git ; cd lab-prom-101
 docker-compose up -d
 ```
 
