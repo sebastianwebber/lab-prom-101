@@ -1,12 +1,26 @@
 scrape_configs:
-- job_name: postgres
-  scrape_interval: 5s
-  static_configs:
-  - targets:
-    - postgres_exporter:9187
+  - job_name: postgres
+    scrape_interval: 5s
+    static_configs:
+      - targets:
+          - postgres_exporter:9187
+        labels:
+          label_b: "rocks"
+    relabel_configs:
 
-- job_name: nodes
-  scrape_interval: 5s
-  static_configs:
-  - targets:
-    - node_exporter:9100
+     ## references: 
+     ### - https://prometheus.io/docs/guides/multi-target-exporter/
+     ### - https://prometheus.io/blog/2015/06/01/advanced-service-discovery/
+     
+    - source_labels: [__address__, 'label_b'] ## __address__ is "instance" LOL
+      separator:     ';'
+      regex:         '(\w+)_.*;(.*)'
+      replacement:   '${1}-${2}'
+      target_label:  'label_c'
+
+  - job_name: nodes
+    scrape_interval: 5s
+    static_configs:
+    - targets:
+      - node_exporter:9100
+
